@@ -8,7 +8,7 @@ import (
 // to the Prometheus descriptors for each metric
 
 type seleniumCollector struct {
-	session_requests *prometheus.Desc
+	session_backlog *prometheus.Desc
 	slots_free *prometheus.Desc
 	slots_total *prometheus.Desc
 }
@@ -17,7 +17,7 @@ type seleniumCollector struct {
 // each descriptor and return a pointer to the collector
 func newSeleniumCollector() *seleniumCollector {
 	return &seleniumCollector{
-		session_requests: prometheus.NewDesc("selenium_session_requests",
+		session_backlog: prometheus.NewDesc("selenium_session_backlog",
 						  "Number of Selenium requests waiting for a session",
 						  nil, nil,
 						),
@@ -36,7 +36,7 @@ func newSeleniumCollector() *seleniumCollector {
 // Writes all descriptors to the prometheus desc channel
 func (collector *seleniumCollector) Describe(ch chan<- *prometheus.Desc) {
 	// Should be updated with each metric created
-	ch <- collector.session_requests
+	ch <- collector.session_backlog
 	ch <- collector.slots_free
 	ch <- collector.slots_total
 }
@@ -46,7 +46,7 @@ func (collector *seleniumCollector) Collect(ch chan<- prometheus.Metric) {
 	// This is where the logic goes in order to set the metric values
 	val_sessions, val_slots_used, val_total_slots := calcMetrics()
 
-	ch <- prometheus.MustNewConstMetric(collector.session_requests, prometheus.GaugeValue, val_sessions)
+	ch <- prometheus.MustNewConstMetric(collector.session_backlog, prometheus.GaugeValue, val_sessions)
 	ch <- prometheus.MustNewConstMetric(collector.slots_free, prometheus.GaugeValue, val_slots_used)
 	ch <- prometheus.MustNewConstMetric(collector.slots_total, prometheus.GaugeValue, val_total_slots)
 }
