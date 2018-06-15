@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"time"
-	"fmt"
 )
 
 type hubResponse struct {
