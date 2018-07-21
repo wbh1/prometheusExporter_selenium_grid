@@ -10,7 +10,7 @@ import (
 
 type hubResponse struct {
 	Slots        slotCounts `json:"slotCounts"`
-	NewSession   float64    `json:"port"`
+	NewSession   float64    `json:"newSessionRequestCount"`
 }
 
 type slotCounts struct {
